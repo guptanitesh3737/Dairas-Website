@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart | Danira's Spices</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://khalti.com/static/khalti-checkout.js"></script>
+</head>
+<body>
+<header>
+    <div class="logo">Danira's</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+    </nav>
+</header>
+
+<section class="cart-section">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <h3 id="total"></h3>
+    <h4>Select Payment Method:</h4>
+    <button onclick="payOption('stripe')">Pay with Card (Stripe)</button>
+    <button onclick="payOption('esewa')">Pay with eSewa</button>
+    <button onclick="payOption('khalti')">Pay with Khalti</button>
+</section>
+
+<footer>
+    <p>&copy; 2025 Puspanjali Spices | Danira's. All Rights Reserved.</p>
+</footer>
+
+<script>
+// Load cart from localStorage
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cartItemsDiv = document.getElementById('cart-items');
+let totalDiv = document.getElementById('total');
+
+// Display cart items
+function displayCart() {
+    cartItemsDiv.innerHTML = '';
+    let total = 0;
+    cart.forEach((item, index) => {
+        total += item.price;
+        cartItemsDiv.innerHTML += `<p>${item.product} - Rs. ${item.price} <button onclick="removeItem(${index})">Remove</button></p>`;
+    });
+    totalDiv.innerText = "Total: Rs. " + total;
+}
+
+// Remove item from cart
+function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    displayCart();
+}
+
+// Payment options
+function payOption(method) {
+    if(method === 'stripe') checkoutStripe();
+    else if(method === 'esewa') checkoutESewa();
+    else if(method === 'khalti') checkoutKhalti();
+}
+
+// Stripe Checkout
+function checkoutStripe() {
+    const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // Replace with your Stripe key
+    fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cart })
+    })
+    .then(res => res.json())
+    .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+    .then(result => { if(result.error) alert(result.error.message); })
+    .catch(err => console.error(err));
+}
+
+// eSewa Checkout
+function checkoutESewa() {
+    let totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+    const esewaURL = `https://esewa.com.np/epay/main?amt=${totalAmount}&p1=ORDER123&p2=&p3=&scd=MERCHANT_CODE&su=https://yourwebsite.com/success.html&fu=https://yourwebsite.com/cancel.html`;
+    window.location.href = esewaURL;
+}
+
+// Khalti Checkout
+function checkoutKhalti() {
+    let totalAmount = cart.reduce((sum, item) => sum + item.price, 0) * 100; // in paisa
+    var config = {
+        "publicKey": "YOUR_KHALTI_PUBLIC_KEY", // Replace with your Khalti key
+        "productIdentity": "12345",
+        "productName": "Danira's Cart",
+        "productUrl": "https://yourwebsite.com/cart.html",
+        "paymentPreference": ["KHALTI", "EBANKING", "MOBILE_BANKING", "CONNECT_IPS", "SCT"],
+        "eventHandler": {
+            onSuccess (payload) { alert("Payment Successful!"); },
+            onError (error) { alert("Payment Failed!"); },
+            onClose() { console.log("Khalti widget closed"); }
+        }
+    };
+    var checkout = new KhaltiCheckout(config);
+    checkout.show({amount: totalAmount});
+}
+
+// Initial display
+displayCart();
+</script>
+</body>
+</html>

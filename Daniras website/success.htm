@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Successful | Danira's Spices</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div class="logo">Danira's</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+    </nav>
+</header>
+
+<section class="confirmation">
+    <h2>Payment Successful!</h2>
+    <p>Thank you for your purchase from <strong>Danira's Spices</strong>.</p>
+    <p>Your order has been received and is being processed.</p>
+    <a href="index.html" class="btn">Continue Shopping</a>
+</section>
+
+<footer>
+    <p>&copy; 2025 Puspanjali Spices | Danira's. All Rights Reserved.</p>
+</footer>
+
+<script>
+// Clear the cart after successful payment
+localStorage.removeItem('cart');
+</script>
+</body>
+</html>

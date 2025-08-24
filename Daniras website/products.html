@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Danira's Spices</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Danira's</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </header>
+
+    <section class="featured-products">
+        <h2>Our Products</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="images/moongdaal.jpg" alt="Danira's Moong Dal">
+                <h3>Moong Dal</h3>
+                <p>High-quality, protein-rich pulses for your healthy meals.</p>
+                <button onclick="addToCart('Moong Dal', 500)">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="images/kurkure.jpg" alt="Danira's Kurkure">
+                <h3>Kurkure</h3>
+                <p>Crunchy, tasty snack for every occasion.</p>
+                <button onclick="addToCart('Kurkure', 150)">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="images/chips.jpg" alt="Danira's Chips">
+                <h3>Chips</h3>
+                <p>Deliciously crispy chips made from premium potatoes.</p>
+                <button onclick="addToCart('Chips', 120)">Add to Cart</button>
+            </div>
+            <!-- Add more products as needed -->
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Puspanjali Spices | Danira's. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
